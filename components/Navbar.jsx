@@ -14,7 +14,9 @@ export default function Navbar() {
           <Link href="/services">Services</Link>
          <Link href="/portfolio">Portfolio</Link>
           <Link href="/booking">Booking</Link>
+          <Link href="/my-bookings">My Bookings</Link>
           <Link href="/login">Login</Link>
+          
         </div>
 
       </div>

@@ -121,8 +121,32 @@ if (!phonePattern.test(formData.phone)) {
   status: "Pending",
 };
 
+// Show submitted booking
+setSubmittedBooking(booking);
+
+// Console
+console.log("Booking Submitted:");
+console.log(booking);
+
     // Show submitted booking
     setSubmittedBooking(booking);
+
+    // Get existing bookings
+const existingBookings = JSON.parse(
+  localStorage.getItem("photographyBookings") || "[]"
+);
+
+// Add the new booking
+const updatedBookings = [
+  ...existingBookings,
+  booking,
+];
+
+// Save all bookings
+localStorage.setItem(
+  "photographyBookings",
+  JSON.stringify(updatedBookings)
+);
 
     // Console
     console.log("Booking Submitted:");
@@ -143,6 +167,18 @@ if (!phonePattern.test(formData.phone)) {
     setSuccessMessage("Booking submitted successfully!");
     setIsSubmitting(false);
   };
+
+  const selectedService = services.find(
+  (service) =>
+    service.id === Number(submittedBooking?.service)
+);
+
+
+const totalPrice = selectedService?.price ?? 0;
+
+const advancePayment = totalPrice * 0.5;
+const remainingBalance = totalPrice - advancePayment;
+
 
   return (
     <>
@@ -380,16 +416,26 @@ if (!phonePattern.test(formData.phone)) {
                 }
               </p>
 
-              <p>
-                <strong>Price:</strong>{" "}
-                   Rs. {
-                    services.find(
-                        (service) =>
-                         service.id ===
-                         Number(submittedBooking.service)
-                        )?.price.toLocaleString()
-                       }
-              </p>
+             <p>
+            <strong>Service Price:</strong>{" "}
+         Rs. {selectedService?.price.toLocaleString() ?? "0"}
+          </p>
+
+         <p>
+        <strong>Total:</strong>{" "}
+       Rs. {selectedService?.price.toLocaleString() ?? "0"}
+        </p>
+
+
+        <p>
+  <strong>Advance Payment (50%):</strong>{" "}
+  Rs. {advancePayment.toLocaleString()}
+</p>
+
+<p>
+  <strong>Remaining Balance:</strong>{" "}
+  Rs. {remainingBalance.toLocaleString()}
+</p>
 
               <p>
             <strong>Photographer:</strong>{" "}
